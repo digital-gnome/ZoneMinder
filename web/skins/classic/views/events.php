@@ -93,6 +93,14 @@ xhtmlHeaders(__FILE__, translate('Events') );
   <div id="page">
   <?php echo getNavBarHTML() ?>
     <div id="header">
+      <h2><?php echo sprintf( $CLANG['EventCount'], $nEvents, zmVlang( $VLANG['Event'], $nEvents ) ) ?></h2>
+<?php
+if ( $pagination ) {
+?>
+        <h2 class="pagination"><?php echo $pagination ?></h3>
+<?php
+}
+?>
       <div id="headerButtons">
 <?php
 if ( $pages > 1 ) {
@@ -109,7 +117,6 @@ if ( $pages > 1 ) {
 ?>
         <a href="#" onclick="window.history.back();"><?php echo translate('Back') ?></a>
       </div>
-      <h2><?php echo sprintf( $CLANG['EventCount'], $nEvents, zmVlang( $VLANG['Event'], $nEvents ) ) ?></h2>
     </div>
     <div id="content">
       <form name="contentForm" id="contentForm" method="post" action="">
@@ -120,13 +127,6 @@ if ( $pages > 1 ) {
         <input type="hidden" name="sort_field" value="<?php echo validHtmlStr($_REQUEST['sort_field']) ?>"/>
         <input type="hidden" name="sort_asc" value="<?php echo validHtmlStr($_REQUEST['sort_asc']) ?>"/>
         <input type="hidden" name="limit" value="<?php echo $limit ?>"/>
-<?php
-if ( $pagination ) {
-?>
-        <h3 class="pagination"><?php echo $pagination ?></h3>
-<?php
-}
-?>
         <p id="controls">
           <a id="refreshLink" href="#" onclick="location.reload(true);"><?php echo translate('Refresh') ?></a>
           <a id="timelineLink" href="#" onclick="createPopup( '?view=timeline<?php echo $filterQuery ?>', 'zmTimeline', 'timeline' );"><?php echo translate('ShowTimeline') ?></a>
