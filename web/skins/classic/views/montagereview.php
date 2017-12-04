@@ -59,15 +59,29 @@ include('_monitor_filters.php');
 $filter_bar = ob_get_contents();
 ob_end_clean();
 
-if (isset($_REQUEST['minTime']) || isset($_REQUEST['maxTime'])) {
+if (isset($_REQUEST['minTime']) && isset($_REQUEST['maxTime'])) {
   $filter = array(
       'Query' => array(
         'terms' => array(
-          array('attr' => 'StartDateTime', 'op' => '>=', 'val' => $_REQUEST['minTime']),
-          array('attr' => 'StartDateTime', 'op' => '<=', 'val' => $_REQUEST['maxTime'], 'cnj' => 'and'),
+          array('attr' => 'StartDateTime', 'op' => '>=', 'val' => $_REQUEST['minTime'], 'obr' => '1'),
+          array('attr' => 'StartDateTime', 'op' => '<=', 'val' => $_REQUEST['maxTime'], 'cnj' => 'and', 'cbr' => '1'),
         )
       ),
     );
+  if (isset($_SESSION['MonitorId'])) {
+    $filter['Query']['terms'][] = (array('attr' => 'MonitorId', 'op' => '=', 'val' => $_SESSION['MonitorId']));
+  }
+  if (isset($monitors) && !isset($_SESSION['MonitorId'])) {
+    for ($i=0; $i < count($monitors); $i++) {
+      if ($i == '0') {
+        $filter['Query']['terms'][] = array('attr' => 'MonitorId', 'op' => '=', 'val' => $monitors[$i]['Id'], 'cnj' => 'and', 'obr' => '1');
+      } else if ($i == (count($monitors)-1)) {
+        $filter['Query']['terms'][] = array('attr' => 'MonitorId', 'op' => '=', 'val' => $monitors[$i]['Id'], 'cnj' => 'or', 'cbr' => '1');
+      } else {
+        $filter['Query']['terms'][] = array('attr' => 'MonitorId', 'op' => '=', 'val' => $monitors[$i]['Id'], 'cnj' => 'or');
+      }
+    }
+  }
   parseFilter( $filter );
   $filterQuery = $filter['query'];
 }
