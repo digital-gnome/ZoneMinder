@@ -137,7 +137,7 @@ if ( openFilterWindow ) {
 }
 
 function initPage () {
-  if (window.history.length == 1) {
+  if (window.history.length == 1 && $j('#controls').children().eq(0).html() == "Back") {
     $j('#controls').children().eq(0).html('');
   }
 }

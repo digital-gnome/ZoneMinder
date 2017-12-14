@@ -978,7 +978,7 @@ function initPage() {
   nearEventsQuery(eventData.Id);
   initialAlarmCues(eventData.Id); //call ajax+renderAlarmCues
   if (scale == "auto") changeScale();
-  if (window.history.length == 1) {
+  if (window.history.length == 1 && $j('#closeWindow').children().html() == "Back") {
     $j('#closeWindow').html('');
   }
 }
